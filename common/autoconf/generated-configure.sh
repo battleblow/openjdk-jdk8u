@@ -13708,6 +13708,21 @@ test -n "$target_alias" &&
   OPENJDK_BUILD_CPU_BITS="$VAR_CPU_BITS"
   OPENJDK_BUILD_CPU_ENDIAN="$VAR_CPU_ENDIAN"
 
+  # The company name, if any
+
+# Check whether --with-company-name was given.
+if test "${with_company_name+set}" = set; then :
+  withval=$with_company_name;
+fi
+
+  if test "x$with_company_name" = xyes; then
+    as_fn_error $? "--with-company-name must have a value" "$LINENO" 5
+  elif  ! [[ $with_company_name =~ ^[[:print:]]*$ ]] ; then
+    as_fn_error $? "--with-company-name contains non-printing characters: $with_company_name" "$LINENO" 5
+  elif test "x$with_company_name" != x; then
+    COMPANY_NAME="$with_company_name"
+  fi
+
 
 
 
