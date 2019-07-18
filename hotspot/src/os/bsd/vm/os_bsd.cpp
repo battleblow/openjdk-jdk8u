@@ -2571,8 +2571,8 @@ bool os::Bsd::superpage_sanity_check(bool warn, size_t* page_size) {
 
 
 char* os::reserve_memory_special(size_t bytes, size_t alignment, char* req_addr, bool exec) {
-#ifdef __FreeBSD__
-  fatal("os::reserve_memory_special should not be called on FreeBSD.");
+#if !defined(__APPLE__)
+  fatal("os::reserve_memory_special should not be called.");
   return NULL;
 #else
   fatal("This code is not used or maintained.");
@@ -2638,8 +2638,8 @@ char* os::reserve_memory_special(size_t bytes, size_t alignment, char* req_addr,
 }
 
 bool os::release_memory_special(char* base, size_t bytes) {
-#ifdef __FreeBSD__
-  fatal("os::release_memory_special should not be called on FreeBSD.");
+#if !defined(__APPLE__)
+  fatal("os::release_memory_special should not be called.");
   return false;
 #else
   if (MemTracker::tracking_level() > NMT_minimal) {
