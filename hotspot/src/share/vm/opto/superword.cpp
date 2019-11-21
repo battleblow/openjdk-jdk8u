@@ -448,6 +448,7 @@ bool SuperWord::ref_is_alignable(SWPointer& p) {
     return true;   // no induction variable
   }
   CountedLoopEndNode* pre_end = get_pre_loop_end(lp()->as_CountedLoop());
+  assert(pre_end != NULL, "we must have a correct pre-loop");
   assert(pre_end->stride_is_con(), "pre loop stride is constant");
   int preloop_stride = pre_end->stride_con();
 
@@ -482,7 +483,9 @@ bool SuperWord::ref_is_alignable(SWPointer& p) {
   if (init_nd->is_Con() && p.invar() == NULL) {
     int init = init_nd->bottom_type()->is_int()->get_con();
     int init_offset = init * p.scale_in_bytes() + offset;
-    assert(init_offset >= 0, "positive offset from object start");
+    if (init_offset < 0) { // negative offset from object start?
+      return false;        // may happen in dead loop
+    }
     if (vw % span == 0) {
       // If vm is a multiple of span, we use formula (1).
       if (span > 0) {
@@ -2050,7 +2053,7 @@ void SuperWord::align_initial_loop_index(MemNode* align_to_ref) {
   CountedLoopNode *main_head = lp()->as_CountedLoop();
   assert(main_head->is_main_loop(), "");
   CountedLoopEndNode* pre_end = get_pre_loop_end(main_head);
-  assert(pre_end != NULL, "");
+  assert(pre_end != NULL, "we must have a correct pre-loop");
   Node *pre_opaq1 = pre_end->limit();
   assert(pre_opaq1->Opcode() == Op_Opaque1, "");
   Opaque1Node *pre_opaq = (Opaque1Node*)pre_opaq1;
@@ -2205,16 +2208,27 @@ void SuperWord::align_initial_loop_index(MemNode* align_to_ref) {
 
 //----------------------------get_pre_loop_end---------------------------
 // Find pre loop end from main loop.  Returns null if none.
-CountedLoopEndNode* SuperWord::get_pre_loop_end(CountedLoopNode *cl) {
-  Node *ctrl = cl->in(LoopNode::EntryControl);
+CountedLoopEndNode* SuperWord::get_pre_loop_end(CountedLoopNode* cl) {
+  Node* ctrl = cl->in(LoopNode::EntryControl);
   if (!ctrl->is_IfTrue() && !ctrl->is_IfFalse()) return NULL;
-  Node *iffm = ctrl->in(0);
+  Node* iffm = ctrl->in(0);
   if (!iffm->is_If()) return NULL;
-  Node *p_f = iffm->in(0);
+  Node* bolzm = iffm->in(1);
+  if (!bolzm->is_Bool()) return NULL;
+  Node* cmpzm = bolzm->in(1);
+  if (!cmpzm->is_Cmp()) return NULL;
+  Node* opqzm = cmpzm->in(2);
+  // Can not optimize a loop if zero-trip Opaque1 node is optimized
+  // away and then another round of loop opts attempted.
+  if (opqzm->Opcode() != Op_Opaque1) {
+    return NULL;
+  }
+  Node* p_f = iffm->in(0);
   if (!p_f->is_IfFalse()) return NULL;
   if (!p_f->in(0)->is_CountedLoopEnd()) return NULL;
-  CountedLoopEndNode *pre_end = p_f->in(0)->as_CountedLoopEnd();
-  if (!pre_end->loopnode()->is_pre_loop()) return NULL;
+  CountedLoopEndNode* pre_end = p_f->in(0)->as_CountedLoopEnd();
+  CountedLoopNode* loop_node = pre_end->loopnode();
+  if (loop_node == NULL || !loop_node->is_pre_loop()) return NULL;
   return pre_end;
 }
 

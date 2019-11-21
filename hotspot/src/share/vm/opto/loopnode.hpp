@@ -279,6 +279,7 @@ public:
     if (iv_phi == NULL) {
       return NULL;
     }
+    assert(iv_phi->is_Phi(), "should be PhiNode");
     Node *ln = iv_phi->in(0);
     if (ln->is_CountedLoop() && ln->as_CountedLoop()->loopexit() == this) {
       return (CountedLoopNode*)ln;
@@ -959,7 +960,7 @@ public:
   // loop.  Scale_con, offset and limit are all loop invariant.
   void add_constraint( int stride_con, int scale_con, Node *offset, Node *low_limit, Node *upper_limit, Node *pre_ctrl, Node **pre_limit, Node **main_limit );
   // Helper function for add_constraint().
-  Node* adjust_limit( int stride_con, Node * scale, Node *offset, Node *rc_limit, Node *loop_limit, Node *pre_ctrl );
+  Node* adjust_limit(int stride_con, Node * scale, Node *offset, Node *rc_limit, Node *loop_limit, Node *pre_ctrl, bool round_up);
 
   // Partially peel loop up through last_peel node.
   bool partial_peel( IdealLoopTree *loop, Node_List &old_new );
