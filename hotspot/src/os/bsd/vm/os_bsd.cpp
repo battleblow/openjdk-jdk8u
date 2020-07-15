@@ -1716,24 +1716,6 @@ void* os::dll_lookup(void* handle, const char* name) {
   return dlsym(handle, name);
 }
 
-
-static bool _print_ascii_file(const char* filename, outputStream* st) {
-  int fd = ::open(filename, O_RDONLY);
-  if (fd == -1) {
-     return false;
-  }
-
-  char buf[32];
-  int bytes;
-  while ((bytes = ::read(fd, buf, sizeof(buf))) > 0) {
-    st->print_raw(buf, bytes);
-  }
-
-  ::close(fd);
-
-  return true;
-}
-
 void os::print_dll_info(outputStream *st) {
   st->print_cr("Dynamic libraries:");
 #ifdef RTLD_DI_LINKMAP
@@ -2549,6 +2531,7 @@ void os::large_page_init() {
   }
 }
 
+#ifdef __FreeBSD__
 // Insertion sort for small arrays (descending order).
 static void insertion_sort_descending(size_t* array, int len) {
   for (int i = 0; i < len; i++) {
@@ -2560,6 +2543,7 @@ static void insertion_sort_descending(size_t* array, int len) {
     }
   }
 }
+#endif
 
 bool os::Bsd::superpage_sanity_check(bool warn, size_t* page_size) {
 #ifdef __FreeBSD__
