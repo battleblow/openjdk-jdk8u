@@ -145,11 +145,16 @@ ifeq ($(USE_CLANG), true)
     # level specific PCH files for the opt build and use them here, but
     # it's probably not worth the effort as long as only a few files
     # need this special handling.
-    PCH_FLAG/loopTransform.o = $(PCH_FLAG/NO_PCH)
     PCH_FLAG/sharedRuntimeTrig.o = $(PCH_FLAG/NO_PCH)
     PCH_FLAG/sharedRuntimeTrans.o = $(PCH_FLAG/NO_PCH)
-    PCH_FLAG/unsafe.o = $(PCH_FLAG/NO_PCH)
 
+    ifeq ($(shell expr $(CC_VER_MAJOR) = 4 \& $(CC_VER_MINOR) = 2), 1)
+      PCH_FLAG/loopTransform.o = $(PCH_FLAG/NO_PCH)
+      PCH_FLAG/unsafe.o = $(PCH_FLAG/NO_PCH)
+    endif
+    ifeq ($(shell expr $(CC_VER_MAJOR) = 6 \& $(CC_VER_MINOR) = 0), 1)
+      PCH_FLAG/unsafe.o = $(PCH_FLAG/NO_PCH)
+    endif
     ifeq ($(shell expr $(CC_VER_MAJOR) = 10 \| $(CC_VER_MAJOR) = 11), 1)
       ifeq ($(BUILDARCH), i486)
         PCH_FLAG/bitMap.o = $(PCH_FLAG/NO_PCH)
