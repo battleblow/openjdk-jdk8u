@@ -149,7 +149,12 @@ ifeq ($(USE_CLANG), true)
     PCH_FLAG/sharedRuntimeTrig.o = $(PCH_FLAG/NO_PCH)
     PCH_FLAG/sharedRuntimeTrans.o = $(PCH_FLAG/NO_PCH)
     PCH_FLAG/unsafe.o = $(PCH_FLAG/NO_PCH)
-  
+
+    ifeq ($(shell expr $(CC_VER_MAJOR) = 10 \| $(CC_VER_MAJOR) = 11), 1)
+      ifeq ($(BUILDARCH), i486)
+        PCH_FLAG/bitMap.o = $(PCH_FLAG/NO_PCH)
+      endif
+    endif
   endif
 else # ($(USE_CLANG), true)
   # check for precompiled headers support
@@ -336,6 +341,11 @@ ifeq ($(USE_CLANG), true)
   endif
   ifeq ($(shell expr $(CC_VER_MAJOR) = 6 \& $(CC_VER_MINOR) = 0), 1)
     OPT_CFLAGS/unsafe.o += -O1
+  endif
+  ifeq ($(shell expr $(CC_VER_MAJOR) = 10 \| $(CC_VER_MAJOR) = 11), 1)
+    ifeq ($(BUILDARCH), i486)
+      OPT_CFLAGS/bitMap.o += -O1
+    endif
   endif
 else
   # 6835796. Problem in GCC 4.3.0 with mulnode.o optimized compilation.
