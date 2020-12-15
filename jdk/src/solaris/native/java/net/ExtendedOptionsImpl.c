@@ -447,7 +447,7 @@ JNIEXPORT jboolean JNICALL Java_sun_net_ExtendedOptionsImpl_flowSupported
     return flowSupported0();
 }
 
-#if defined(__linux__) || defined(MACOSX) || defined(_ALLBSD_SOURCE)
+#if defined(__linux__) || defined(MACOSX) || (defined(_ALLBSD_SOURCE) && !defined(__OpenBSD__))
 
 /*
  * Class:     sun_net_ExtendedOptionsImpl
@@ -472,7 +472,7 @@ JNIEXPORT jboolean JNICALL Java_sun_net_ExtendedOptionsImpl_keepAliveOptionsSupp
     return JNI_FALSE;
 }
 
-#endif /* __linux__ || MACOSX || _ALLBSD_SOURCE */
+#endif /* __linux__ || MACOSX || (_ALLBSD_SOURCE && !__OpenBSD__) */
 
 /*
  * Class:     sun_net_ExtendedOptionsImpl
