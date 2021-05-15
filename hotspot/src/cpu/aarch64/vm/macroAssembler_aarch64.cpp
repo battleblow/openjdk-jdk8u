@@ -1,5 +1,4 @@
 /*
-/*
  * Copyright (c) 2013, Red Hat Inc.
  * Copyright (c) 1997, 2012, Oracle and/or its affiliates.
  * All rights reserved.
