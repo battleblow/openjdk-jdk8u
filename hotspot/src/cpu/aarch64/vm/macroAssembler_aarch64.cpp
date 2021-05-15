@@ -1841,7 +1841,7 @@ void MacroAssembler::decrement(Register reg, int value)
   if (value < (1 << 12)) { sub(reg, reg, value); return; }
   /* else */ {
     assert(reg != rscratch2, "invalid dst for register decrement");
-    mov(rscratch2, (unsigned long)value);
+    mov(rscratch2, (u_int64_t)value);
     sub(reg, reg, rscratch2);
   }
 }
