@@ -82,6 +82,9 @@
 #  define PROC_STACKGAP_DISABLE	0x0002
 # endif
 #endif /* __FreeBSD__ */
+#ifdef __OpenBSD__
+# include <pthread_np.h>
+#endif /* __OpenBSD__ */
 
 #define REG_FP 29
 
@@ -285,7 +288,7 @@ JVM_handle_bsd_signal(int sig,
       return 1;
     }
 
-#ifndef AMD64
+#if !defined(AMD64) && !defined(__OpenBSD__)
     // Halt if SI_KERNEL before more crashes get misdiagnosed as Java bugs
     // This can happen in any running code (currently more frequently in
     // interpreter code but has been seen in compiled code)
