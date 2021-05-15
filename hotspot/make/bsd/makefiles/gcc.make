@@ -282,6 +282,7 @@ ifeq ($(USE_CLANG), true)
 #  WARNINGS_ARE_ERRORS += -Wno-tautological-constant-out-of-range-compare
   WARNINGS_ARE_ERRORS += -Wno-delete-non-virtual-dtor -Wno-deprecated -Wno-format -Wno-dynamic-class-memaccess
   WARNINGS_ARE_ERRORS += -Wno-empty-body
+  WARNINGS_ARE_ERRORS += -Wno-format-nonliteral
   ifneq "$(shell expr \( $(CC_VER_MAJOR) \>= 6 \))" "0"
     WARNINGS_ARE_ERRORS += -Wno-undefined-bool-conversion -Wno-expansion-to-defined
     WARNINGS_ARE_ERRORS += -Wno-undefined-var-template
@@ -298,7 +299,7 @@ ifeq ($(USE_CLANG),)
   endif
 endif
 
-CFLAGS_WARN/DEFAULT = $(WARNINGS_ARE_ERRORS) $(WARNING_FLAGS)
+CFLAGS_WARN/DEFAULT = $(WARNING_FLAGS) $(WARNINGS_ARE_ERRORS)
 # Special cases
 CFLAGS_WARN/BYFILE = $(CFLAGS_WARN/$@)$(CFLAGS_WARN/DEFAULT$(CFLAGS_WARN/$@)) 
 # XXXDARWIN: for _dyld_bind_fully_image_containing_address
