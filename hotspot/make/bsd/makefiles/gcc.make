@@ -480,6 +480,7 @@ else
     STABS_CFLAGS/ppc   = -g
     STABS_CFLAGS/amd64 = -g
     STABS_CFLAGS/aarch64 = -g
+    STABS_CFLAGS/sparcv9 = -g
     ifeq ($(STABS_CFLAGS/$(BUILDARCH)),)
       STABS_CFLAGS += -gstabs
     else
