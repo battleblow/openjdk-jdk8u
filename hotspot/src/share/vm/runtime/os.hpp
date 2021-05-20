@@ -890,6 +890,9 @@ class os: AllStatic {
 #ifdef TARGET_OS_ARCH_bsd_ppc
 # include "os_bsd_ppc.hpp"
 #endif
+#ifdef TARGET_OS_ARCH_bsd_sparc
+# include "os_bsd_sparc.hpp"
+#endif
 #ifdef TARGET_OS_ARCH_bsd_x86
 # include "os_bsd_x86.hpp"
 #endif

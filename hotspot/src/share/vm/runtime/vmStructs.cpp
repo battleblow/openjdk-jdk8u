@@ -158,6 +158,9 @@
 #ifdef TARGET_OS_ARCH_bsd_ppc
 # include "vmStructs_bsd_ppc.hpp"
 #endif
+#ifdef TARGET_OS_ARCH_bsd_sparc
+# include "vmStructs_bsd_sparc.hpp"
+#endif
 #ifdef TARGET_OS_ARCH_bsd_x86
 # include "vmStructs_bsd_x86.hpp"
 #endif

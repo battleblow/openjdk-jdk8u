@@ -72,6 +72,9 @@
 #ifdef TARGET_OS_ARCH_bsd_ppc
 # include "atomic_bsd_ppc.inline.hpp"
 #endif
+#ifdef TARGET_OS_ARCH_bsd_sparc
+# include "atomic_bsd_sparc.inline.hpp"
+#endif
 #ifdef TARGET_OS_ARCH_bsd_x86
 # include "atomic_bsd_x86.inline.hpp"
 #endif
