@@ -22,8 +22,8 @@
  *
  */
 
-#ifndef OS_CPU_LINUX_SPARC_VM_ATOMIC_LINUX_SPARC_INLINE_HPP
-#define OS_CPU_LINUX_SPARC_VM_ATOMIC_LINUX_SPARC_INLINE_HPP
+#ifndef OS_CPU_BSD_SPARC_VM_ATOMIC_BSD_SPARC_INLINE_HPP
+#define OS_CPU_BSD_SPARC_VM_ATOMIC_BSD_SPARC_INLINE_HPP
 
 #include "runtime/atomic.hpp"
 #include "runtime/os.hpp"
@@ -213,4 +213,4 @@ inline void*    Atomic::cmpxchg_ptr(void*    exchange_value, volatile void*     
   return (void*)cmpxchg_ptr((intptr_t)exchange_value, (volatile intptr_t*)dest, (intptr_t)compare_value);
 }
 
-#endif // OS_CPU_LINUX_SPARC_VM_ATOMIC_LINUX_SPARC_INLINE_HPP
+#endif // OS_CPU_BSD_SPARC_VM_ATOMIC_BSD_SPARC_INLINE_HPP
