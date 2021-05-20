@@ -12,4 +12,4 @@ lib_arch = sparcv9
 
 compiler = gcc
 
-sysdefs = -DBSD -D_GNU_SOURCE -DSPARC
+sysdefs = -D_ALLBSD_SOURCE -D_GNU_SOURCE -DSPARC
