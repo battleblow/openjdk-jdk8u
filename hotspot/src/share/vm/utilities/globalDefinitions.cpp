@@ -390,10 +390,10 @@ void GlobalDefinitions::test_globals() {
         assert(strcmp(expected, actual) == 0, "Test failed");
 
 void GlobalDefinitions::test_proper_unit() {
-  EXPECT_EQ(0u,     byte_size_in_proper_unit(0u));
+  EXPECT_EQ(0ul,     byte_size_in_proper_unit(0ul));
   EXPECT_STREQ("B", proper_unit_for_byte_size(0u));
 
-  EXPECT_EQ(1u,     byte_size_in_proper_unit(1u));
+  EXPECT_EQ(1ul,     byte_size_in_proper_unit(1ul));
   EXPECT_STREQ("B", proper_unit_for_byte_size(1u));
 
   EXPECT_EQ(1023u,  byte_size_in_proper_unit(K - 1));
