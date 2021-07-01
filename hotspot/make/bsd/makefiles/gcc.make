@@ -287,6 +287,8 @@ ifeq ($(USE_CLANG), true)
     WARNINGS_ARE_ERRORS += -Wno-undefined-bool-conversion -Wno-expansion-to-defined
     WARNINGS_ARE_ERRORS += -Wno-undefined-var-template
   endif
+else
+  WARNINGS_ARE_ERRORS += -Wno-format
 endif
 
 WARNING_FLAGS = -Wpointer-arith -Wsign-compare -Wundef -Wunused-function -Wformat=2
@@ -480,7 +482,6 @@ else
     STABS_CFLAGS/ppc   = -g
     STABS_CFLAGS/amd64 = -g
     STABS_CFLAGS/aarch64 = -g
-    STABS_CFLAGS/sparcv9 = -g
     ifeq ($(STABS_CFLAGS/$(BUILDARCH)),)
       STABS_CFLAGS += -gstabs
     else
