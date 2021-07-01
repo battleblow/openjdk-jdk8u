@@ -255,7 +255,11 @@ void os::print_context(outputStream *st, void *context) {
                SIG_REGS(sc)[CON_O4],
                SIG_REGS(sc)[CON_O5],
                SIG_REGS(sc)[CON_O6],
+#ifdef STACKGHOST
+               SIG_REGS(sc)[CON_O7]^sg_cookie());
+#else
                SIG_REGS(sc)[CON_O7]);
+#endif
 
   intptr_t *sp = (intptr_t *)os::Bsd::ucontext_get_sp(uc);
   st->print_cr(" L0=" INTPTR_FORMAT " L1=" INTPTR_FORMAT
@@ -329,7 +333,11 @@ void os::print_register_info(outputStream *st, void *context) {
   st->print("O4="); print_location(st, SIG_REGS(sc)[CON_O4]);
   st->print("O5="); print_location(st, SIG_REGS(sc)[CON_O5]);
   st->print("O6="); print_location(st, SIG_REGS(sc)[CON_O6]);
+#ifdef STACKGHOST
+  st->print("O7="); print_location(st, SIG_REGS(sc)[CON_O7]^sg_cookie());
+#else
   st->print("O7="); print_location(st, SIG_REGS(sc)[CON_O7]);
+#endif
   st->cr();
 
   st->print("L0="); print_location(st, sp[L0->sp_offset_in_saved_window()]);
@@ -494,7 +502,11 @@ inline static bool checkZombie(sigcontext* uc, address* pc, address* stub) {
 
     // At the stub it needs to look like a call from the caller of this
     // method (not a call from the segv site).
+#ifdef STACKGHOST
+    *pc = (address)(SIG_REGS(uc)[CON_O7]^sg_cookie());
+#else
     *pc = (address)SIG_REGS(uc)[CON_O7];
+#endif
     return true;
   }
   return false;
@@ -513,7 +525,11 @@ inline static bool checkICMiss(sigcontext* uc, address* pc, address* stub) {
     *stub = SharedRuntime::get_ic_miss_stub();
     // At the stub it needs to look like a call from the caller of this
     // method (not a call from the segv site).
+#ifdef STACKGHOST
+    *pc = (address)(SIG_REGS(uc)[CON_O7]^sg_cookie());
+#else
     *pc = (address)SIG_REGS(uc)[CON_O7];
+#endif
     return true;
     return true;
   }

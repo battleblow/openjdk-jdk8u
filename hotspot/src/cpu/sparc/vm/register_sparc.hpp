@@ -28,6 +28,10 @@
 #include "asm/register.hpp"
 #include "vm_version_sparc.hpp"
 
+#ifdef STACKGHOST
+uintptr_t sg_cookie();
+#endif
+
 // forward declaration
 class Address;
 class VMRegImpl;

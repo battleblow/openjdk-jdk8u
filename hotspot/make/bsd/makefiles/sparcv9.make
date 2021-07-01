@@ -21,6 +21,12 @@
 # questions.
 #  
 
+OS_VENDOR = $(shell uname -s)
+
+ifeq ($(OS_VENDOR), OpenBSD)
+SYSDEFS+= -DSTACKGHOST
+endif
+
 # gcc 4.0 miscompiles this code in -m64
 OPT_CFLAGS/macro.o = -O0
 
