@@ -66,7 +66,7 @@ ifeq ($(ARCH), ia64)
 endif
 
 # sparc
-ifeq ($(ARCH), sparc64)
+ifneq (,$(findstring $(ARCH), sparc))
   ifeq ($(ARCH_DATA_MODEL), 64)
     ARCH_DATA_MODEL  = 64
     MAKE_ARGS        += LP64=1
